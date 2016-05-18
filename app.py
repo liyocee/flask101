@@ -1,6 +1,5 @@
 from flask import Flask
-from flask import render_template
-from flask import request
+from flask import render_template, request, url_for, redirect
 
 app = Flask(__name__)
 app.debug = True
@@ -22,6 +21,8 @@ def greeting(person):
 @app.route('/greeting/add/', methods=['POST', 'GET'])
 def add_greeting():
     if request.method == 'POST':
+        if not request.form.get('person') or not request.form.get('greeting'):
+            return redirect(url_for('add_greeting'))
         greeting = request.form['greeting']
         person = request.form['person']
         if person in GREETINGS:
