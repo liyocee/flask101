@@ -1,2 +1,25 @@
 {% extends 'layout.html' %}
-{% block content %} {{message}} {% endblock %}
+
+{% block content %}
+    {% if  greetings %}
+        <h4>Added Greetings </h4>
+        <ul>
+        {% for person, messages in greetings.iteritems() %}
+            <li>
+                <span>Greetee: {{person}}</span><br/>
+                <span>Message:
+                {% for msg in messages %} {{ msg }} | {% endfor %}
+                </span>
+                <span><a href="{{url_for('greeting', person=person)}}"> Say hello, {{person}} </a> </span>
+            </li>
+            <hr/>
+        {% endfor %}
+    {% endif %}
+
+    <form method='post' action='{{ url_for("add_greeting")}}'>
+        <input name='person' type='text' placeholder='Greetee' />
+        <input name='greeting' type='text'  placeholder='Greeting message'/>
+        <input type='submit' value='Add Greeting' />
+
+    </form>
+{% endblock %}
